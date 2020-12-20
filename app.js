@@ -5,7 +5,11 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
 
+const authRouter = require("./app/auth/router");
 const categoryRouter = require("./app/category/router");
+const cartRouter = require("./app/cart/router");
+const deliveryRouter = require("./app/delivery-address/router");
+const productRouter = require("./app/product/router");
 const tagRouter = require("./app/tag/router");
 const wilayahRouter = require("./app/wilayah/router");
 var indexRouter = require("./routes/index");
@@ -33,7 +37,11 @@ app.use(cors());
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/api", authRouter);
 app.use("/api", categoryRouter);
+app.use("/api", cartRouter);
+app.use("/api", deliveryRouter);
+app.use("/api", productRouter);
 app.use("/api", tagRouter);
 app.use("/api", wilayahRouter);
 
