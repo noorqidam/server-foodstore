@@ -201,25 +201,32 @@ async function update(req, res, next) {
   }
 }
 
-async function destroy(req,res,next){
+async function destroy(req, res, next) {
   try {
     let policy = policyFor(req.user);
 
-    if (!policy.can("delete","Product")){
+    if (!policy.can("delete", "Product")) {
       return res.json({
         error: 1,
-        message: `Anda tidak memiliki akses untuk menghapus produk`
-      })
+        message: `Anda tidak memiliki akses untuk menghapus produk`,
+      });
     }
 
-    let product = await Product.findOneAndDelete({_id: req.params.id});
+    let product = await Product.findOneAndDelete({ _id: req.params.id });
 
     let currentImage = `${config.rootPath}/public/upload/${product.image_url}`;
 
-    if(fs.existSync(currentImage)){
-      fs.unlinkSync(currentImage)
+    if (fs.existSync(currentImage)) {
+      fs.unlinkSync(currentImage);
     }
   } catch (err) {
-    next(err)
+    next(err);
   }
 }
+
+module.exports = {
+  index,
+  store,
+  update,
+  destroy,
+};

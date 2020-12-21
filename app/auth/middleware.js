@@ -27,7 +27,7 @@ function decodeToken() {
           message: err.message,
         });
       }
-      console.log("TEST", err.name)
+      console.log("TEST", err.name);
       next(err);
     }
     return next();
@@ -35,5 +35,5 @@ function decodeToken() {
 }
 
 module.exports = {
-  decodeToken
-}
+  decodeToken,
+};

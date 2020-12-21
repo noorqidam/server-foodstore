@@ -72,9 +72,30 @@ async function login(req, res, next) {
   });
 }
 
+async function logout(req, res, next) {
+  let token = getToken(req);
+  let user = await User.findOneAndUpdate(
+    { token: { $in: [token] } },
+    { $pull: { token } },
+    { userFindAndModify: false }
+  );
+
+  if (!user || !token) {
+    return res.json({
+      error: 1,
+      message: "User tidak ditemukan",
+    });
+  }
+
+  return res.json({
+    error: 0,
+    message: "Logout berhasil",
+  });
+}
 module.exports = {
   me,
   localStrategy,
   register,
   login,
+  logout,
 };
