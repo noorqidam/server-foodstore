@@ -9,19 +9,21 @@ const authRouter = require("./app/auth/router");
 const categoryRouter = require("./app/category/router");
 const cartRouter = require("./app/cart/router");
 const deliveryRouter = require("./app/delivery-address/router");
+const invoiceRouter = require("./app/invoice/router");
+const orderRouter = require("./app/order/router");
 const productRouter = require("./app/product/router");
 const tagRouter = require("./app/tag/router");
 const wilayahRouter = require("./app/wilayah/router");
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
 
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/foodstore", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
+const { decodeToken } = require("./app/auth/middleware");
+
+// const mongoose = require("mongoose");
+// mongoose.connect("mongodb://127.0.0.1:27017/foodstore", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   useCreateIndex: true,
+//   useFindAndModify: false,
+// });
 var app = express();
 
 // view engine setup
@@ -34,13 +36,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
+app.use(decodeToken());
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/api", authRouter);
+app.use("/auth", authRouter);
 app.use("/api", categoryRouter);
 app.use("/api", cartRouter);
 app.use("/api", deliveryRouter);
+app.use("/api", invoiceRouter);
+app.use("/api", orderRouter);
 app.use("/api", productRouter);
 app.use("/api", tagRouter);
 app.use("/api", wilayahRouter);
